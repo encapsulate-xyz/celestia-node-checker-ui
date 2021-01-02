@@ -1,9 +1,74 @@
-import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+import React, {useState, useEffect} from 'react';
+
+
+const baseURL = "https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet";
+
+async function getUniswapPairs() {
+  const query = `
+{
+  graphNetworks(first: 1) {
+    totalTokensAllocated
+  }
+}
+  `;
+  const res = await axios.post(baseURL, { query });
+  return ((res.data.data.graphNetworks[0].totalTokensAllocated)/Math.pow(10,24)).toFixed(2);
+}
+
+async function loadData(setDailyVolumeUSDGt) {
+  const pairs = await getUniswapPairs();
+  setDailyVolumeUSDGt(pairs)
+}
+
 
 function App() {
 
 
+  const [dailyVolumeUSDGt, setDailyVolumeUSDGt] = useState(1000);
+  console.log(dailyVolumeUSDGt);
+
+  useEffect(() => {
+    // Runs ONCE after initial rendering
+    loadData(setDailyVolumeUSDGt);
+  }, []);
+
+const computeResults = (e) => {
+  const UIamount = document.getElementById("amount").value;
+  const UIinterest = document.getElementById("interest").value;
+  const UIyears = document.getElementById("years").value;
+
+  // Calculate
+
+  const principal = parseFloat(UIamount);
+  const CalculateInterest = parseFloat(UIinterest) / 100 / 12;
+  const calculatedPayments = parseFloat(UIyears) * 12;
+
+  //Compute monthly Payment
+
+  const x = Math.pow(1 + CalculateInterest, calculatedPayments);
+  const monthly = (principal * x * CalculateInterest) / (x - 1);
+  const monthlyPayment = monthly.toFixed(2);
+
+  //Compute Interest
+
+  const totalInterest = (monthly * calculatedPayments - principal).toFixed(2);
+
+  //Compute Total Payment
+
+  const totalPayment = (monthly * calculatedPayments).toFixed(2);
+
+
+  // document.getElementById("monthlyPayment").innerHTML = "$" + dailyVolumeUSDGt;
+
+  document.getElementById("monthlyPayment").innerHTML = "$" + monthlyPayment;
+  document.getElementById("totalInterest").innerHTML = "%" + totalInterest;
+  document.getElementById("totalPayment").innerHTML = "$" + totalPayment;
+
+  e.preventDefault();
+
+}
 
 
 
@@ -23,7 +88,7 @@ function App() {
             <div className="column is-three-quarters">
               <div className="card">
                 <div className="card-content">
-                  <form id="loan-form">
+                  <form id="loan-form" onSubmit={computeResults}>
                     <div className="level">
                       {/*// <!-- Left side -->*/}
                       <div className="level-left is-marginless">
