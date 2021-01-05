@@ -62,8 +62,18 @@ async function getPriceInUsd() {
 
 
 function App() {
+  const button = document.getElementById('my-button');
+if(button)
+  button.addEventListener('click', (e) => {
+    console.log('Calculating...');
+    // show loader
+    button.classList.add('loading');
 
+    // set timeout
+    setTimeout(computeResults, 2000);
 
+    // prevent page from reloading on submit
+  });
 
 
   const [totalTokensAllocated, setTotalTokensAllocated] = useState([]);
@@ -76,6 +86,12 @@ function App() {
   }, []);
 
 const computeResults =   async () => {
+
+
+
+
+
+
   console.log("loading");
   const amount = parseFloat(document.getElementById("amount").value);
   const addressVar = document.getElementById("address").value;
@@ -86,6 +102,125 @@ const computeResults =   async () => {
   if((!amount) || (!addressVar)) {
     alert("Please enter Proper Values");
     //return
+    return (
+        <body>
+        <section className="section">
+          <div className="container">
+            <div className="content">
+              <h1>GRT Delegation Rewards Calculator</h1>
+              <p>
+                The GRT Rewards Calculator will determine your estimated monthly GRT rewards.
+                Enter the Amount of GRT That You Want To Delegate
+              </p> <p>
+              And the
+              Address of The Indexer That You Want To Delegate To.  </p>
+
+
+
+
+            </div>
+
+            <div className="columns">
+              <div className="column is-three-quarters">
+                <div className="card">
+                  <div className="card-content">
+                    <form id="loan-form" >
+                      <div className="level">
+                        {/*// <!-- Left side -->*/}
+                        <div className="level-left is-marginless">
+                          <div className="level-item">
+                            <p className="number">1</p>
+                            Amount of GRT
+                          </div>
+                        </div>
+
+                        {/*// <!-- Right side -->*/}
+                        <div className="level-right">
+                          <div className="level-item">
+                            <div className="field">
+                              <div className="control has-icons-left ">
+                                <input className="input" id="amount" type="number"/>
+                                <span className="icon is-small is-left">
+                              <i className="fa fa-dollar-sign"></i>
+                            </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div className="level">
+                        {/*// <!-- Left side -->*/}
+                        <div className="level-left is-marginless">
+                          <div className="level-item">
+                            <p className="number">2</p>
+                            Address of Indexer
+                          </div>
+                        </div>
+
+                        {/*// <!-- Right side -->*/}
+                        <div className="level-right">
+                          <div className="level-item">
+                            <div className="field">
+                              <div className="control has-icons-left">
+                                <input className="input" id="address" type="text"  />
+                                {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
+                                <span className="icon is-small is-left">
+                              <i className="fa fa-calendar"></i>
+                            </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div id="my-button" className="control">
+                        <button
+                            className="button is-large is-fullwidth is-primary is-outlined" type={"button"}
+                        >
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/*// <!-- RESULTS -->*/}
+        <section className="section">
+          <h1 className="title ">Calculated Results</h1>
+          <div className="columns is-multiline">
+
+            <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+              <div className="notification is-primary has-text">
+                <p id="monthlyPayment" className="title is-1">GRT</p>
+                <p className="subtitle is-4">Monthly Rewards in GRT</p>
+              </div>
+            </div>
+
+            <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+              <div className="notification is-info has-text">
+                <p id="totalInterest" className="title is-1">%</p>
+                <p className="subtitle is-4">Estimated APY</p>
+              </div>
+            </div>
+
+            <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+              <div className="notification is-link has-text">
+                <p id="totalPayment" className="title is-1">$</p>
+                <p className="subtitle is-4">Monthly Amount in USD</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+
+        </body>
+    );
   }
 
 
@@ -98,6 +233,126 @@ const computeResults =   async () => {
   if(!indexerStats){
     alert("Please enter the correct Indexer Address");
     //return
+    return (
+        <body>
+        <section className="section">
+          <div className="container">
+            <div className="content">
+              <h1>GRT Delegation Rewards Calculator</h1>
+              <p>
+                The GRT Rewards Calculator will determine your estimated monthly GRT rewards.
+                Enter the Amount of GRT That You Want To Delegate
+              </p> <p>
+              And the
+              Address of The Indexer That You Want To Delegate To.  </p>
+
+
+
+
+            </div>
+
+            <div className="columns">
+              <div className="column is-three-quarters">
+                <div className="card">
+                  <div className="card-content">
+                    <form id="loan-form" >
+                      <div className="level">
+                        {/*// <!-- Left side -->*/}
+                        <div className="level-left is-marginless">
+                          <div className="level-item">
+                            <p className="number">1</p>
+                            Amount of GRT
+                          </div>
+                        </div>
+
+                        {/*// <!-- Right side -->*/}
+                        <div className="level-right">
+                          <div className="level-item">
+                            <div className="field">
+                              <div className="control has-icons-left ">
+                                <input className="input" id="amount" type="number"/>
+                                <span className="icon is-small is-left">
+                              <i className="fa fa-dollar-sign"></i>
+                            </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div className="level">
+                        {/*// <!-- Left side -->*/}
+                        <div className="level-left is-marginless">
+                          <div className="level-item">
+                            <p className="number">2</p>
+                            Address of Indexer
+                          </div>
+                        </div>
+
+                        {/*// <!-- Right side -->*/}
+                        <div className="level-right">
+                          <div className="level-item">
+                            <div className="field">
+                              <div className="control has-icons-left">
+                                <input className="input" id="address" type="text"  />
+                                {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
+                                <span className="icon is-small is-left">
+                              <i className="fa fa-calendar"></i>
+                            </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div id="my-button" className="control">
+                        <button
+                            className="button is-large is-fullwidth is-primary is-outlined" type={"button"}
+                        >
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/*// <!-- RESULTS -->*/}
+        <section className="section">
+          <h1 className="title ">Calculated Results</h1>
+          <div className="columns is-multiline">
+
+            <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+              <div className="notification is-primary has-text">
+                <p id="monthlyPayment" className="title is-1">GRT</p>
+                <p className="subtitle is-4">Monthly Rewards in GRT</p>
+              </div>
+            </div>
+
+            <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+              <div className="notification is-info has-text">
+                <p id="totalInterest" className="title is-1">%</p>
+                <p className="subtitle is-4">Estimated APY</p>
+              </div>
+            </div>
+
+            <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+              <div className="notification is-link has-text">
+                <p id="totalPayment" className="title is-1">$</p>
+                <p className="subtitle is-4">Monthly Amount in USD</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+
+        </body>
+    );
+
 
   }
   const price = await (getPriceInUsd());
@@ -129,7 +384,125 @@ const computeResults =   async () => {
   const delegationRatio = delegatedTokens/indexerStakedTokens;
   if (delegationRatio > 16) {
     alert("This Indexer is overdelegated, Dont Delegate to this Indexer !!")
+    return (
+        <body>
+        <section className="section">
+          <div className="container">
+            <div className="content">
+              <h1>GRT Delegation Rewards Calculator</h1>
+              <p>
+                The GRT Rewards Calculator will determine your estimated monthly GRT rewards.
+                Enter the Amount of GRT That You Want To Delegate
+              </p> <p>
+              And the
+              Address of The Indexer That You Want To Delegate To.  </p>
 
+
+
+
+            </div>
+
+            <div className="columns">
+              <div className="column is-three-quarters">
+                <div className="card">
+                  <div className="card-content">
+                    <form id="loan-form" >
+                      <div className="level">
+                        {/*// <!-- Left side -->*/}
+                        <div className="level-left is-marginless">
+                          <div className="level-item">
+                            <p className="number">1</p>
+                            Amount of GRT
+                          </div>
+                        </div>
+
+                        {/*// <!-- Right side -->*/}
+                        <div className="level-right">
+                          <div className="level-item">
+                            <div className="field">
+                              <div className="control has-icons-left ">
+                                <input className="input" id="amount" type="number"/>
+                                <span className="icon is-small is-left">
+                              <i className="fa fa-dollar-sign"></i>
+                            </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div className="level">
+                        {/*// <!-- Left side -->*/}
+                        <div className="level-left is-marginless">
+                          <div className="level-item">
+                            <p className="number">2</p>
+                            Address of Indexer
+                          </div>
+                        </div>
+
+                        {/*// <!-- Right side -->*/}
+                        <div className="level-right">
+                          <div className="level-item">
+                            <div className="field">
+                              <div className="control has-icons-left">
+                                <input className="input" id="address" type="text"  />
+                                {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
+                                <span className="icon is-small is-left">
+                              <i className="fa fa-calendar"></i>
+                            </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div id="my-button" className="control">
+                        <button
+                            className="button is-large is-fullwidth is-primary is-outlined" type={"button"}
+                        >
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/*// <!-- RESULTS -->*/}
+        <section className="section">
+          <h1 className="title ">Calculated Results</h1>
+          <div className="columns is-multiline">
+
+            <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+              <div className="notification is-primary has-text">
+                <p id="monthlyPayment" className="title is-1">GRT</p>
+                <p className="subtitle is-4">Monthly Rewards in GRT</p>
+              </div>
+            </div>
+
+            <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+              <div className="notification is-info has-text">
+                <p id="totalInterest" className="title is-1">%</p>
+                <p className="subtitle is-4">Estimated APY</p>
+              </div>
+            </div>
+
+            <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+              <div className="notification is-link has-text">
+                <p id="totalPayment" className="title is-1">$</p>
+                <p className="subtitle is-4">Monthly Amount in USD</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+
+        </body>
+    );
     // pop up
   }
   console.log("hgfhgffghfh")
@@ -147,6 +520,7 @@ const computeResults =   async () => {
 
   document.getElementById("totalInterest").innerHTML = apy +" %";
   document.getElementById("totalPayment").innerHTML = "$ " + monthlyAmountInUsd;
+  button.classList.remove('loading');
 
 }
 
@@ -225,11 +599,10 @@ const computeResults =   async () => {
                       </div>
                     </div>
 
-                    <div className="control">
+                    <div id="my-button" className="control">
                       <button
-                          className="button is-large is-fullwidth is-primary is-outlined" type={"button"} onClick={computeResults}
+                          className="button is-large is-fullwidth is-primary is-outlined" type={"button"}
                       >
-                        Calculate
                       </button>
                     </div>
                   </form>
