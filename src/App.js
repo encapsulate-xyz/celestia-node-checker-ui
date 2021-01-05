@@ -4,69 +4,149 @@ import React, {useState, useEffect} from 'react';
 
 
 const baseURL = "https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet";
+const priceURL = "https://api.coingecko.com/api/v3/simple/price?ids=the-graph&vs_currencies=usd";
 
-async function getUniswapPairs() {
+
+async function getNetworkStats() {
   const query = `
 {
   graphNetworks(first: 1) {
     totalTokensAllocated
+    delegationRatio
   }
 }
   `;
   const res = await axios.post(baseURL, { query });
-  return ((res.data.data.graphNetworks[0].totalTokensAllocated)/Math.pow(10,24)).toFixed(2);
+  return parseFloat(((res.data.data.graphNetworks[0].totalTokensAllocated)/Math.pow(10,18)).toFixed(2));
 }
 
-async function loadData(setDailyVolumeUSDGt) {
-  const pairs = await getUniswapPairs();
-  setDailyVolumeUSDGt(pairs)
+async function loadNetworkData(setTotalTokensAllocated) {
+  const networkStats = await getNetworkStats();
+  setTotalTokensAllocated(networkStats)
+
+}
+
+
+async function getIndexerStats(address) {
+  const query = `
+{
+  indexer(id: "${address}") {
+    indexingRewardCut
+    queryFeeCut
+    stakedTokens
+    delegatedTokens
+    queryFeesCollected
+    rewardsEarned
+  }
+}
+  `;
+  const res = await axios.post(baseURL, { query });
+  return res.data;
+}
+
+async function getPriceStats() {
+  const res = await axios.get(priceURL);
+  return res.data;
+}
+
+async function loadIndexerData(address) {
+  const indexerStats= await getIndexerStats(address);
+  return indexerStats.data.indexer;
+}
+
+
+async function getPriceInUsd() {
+  const priceStats= await getPriceStats();
+  return priceStats["the-graph"].usd;
 }
 
 
 function App() {
 
 
-  const [dailyVolumeUSDGt, setDailyVolumeUSDGt] = useState(1000);
-  console.log(dailyVolumeUSDGt);
+
+
+  const [totalTokensAllocated, setTotalTokensAllocated] = useState([]);
+
 
   useEffect(() => {
     // Runs ONCE after initial rendering
-    loadData(setDailyVolumeUSDGt);
+    loadNetworkData(setTotalTokensAllocated);
+
   }, []);
 
-const computeResults = (e) => {
-  const UIamount = document.getElementById("amount").value;
-  const UIinterest = document.getElementById("interest").value;
-  const UIyears = document.getElementById("years").value;
+const computeResults =   async () => {
+  console.log("loading");
+  const amount = parseFloat(document.getElementById("amount").value);
+  const addressVar = document.getElementById("address").value;
+  console.log(addressVar)
 
-  // Calculate
-
-  const principal = parseFloat(UIamount);
-  const CalculateInterest = parseFloat(UIinterest) / 100 / 12;
-  const calculatedPayments = parseFloat(UIyears) * 12;
-
-  //Compute monthly Payment
-
-  const x = Math.pow(1 + CalculateInterest, calculatedPayments);
-  const monthly = (principal * x * CalculateInterest) / (x - 1);
-  const monthlyPayment = monthly.toFixed(2);
-
-  //Compute Interest
-
-  const totalInterest = (monthly * calculatedPayments - principal).toFixed(2);
-
-  //Compute Total Payment
-
-  const totalPayment = (monthly * calculatedPayments).toFixed(2);
+  console.log("amount");
+  console.log();
+  if((!amount) || (!addressVar)) {
+    alert("Please enter Proper Values");
+    //return
+  }
 
 
-  // document.getElementById("monthlyPayment").innerHTML = "$" + dailyVolumeUSDGt;
 
-  document.getElementById("monthlyPayment").innerHTML = "$" + monthlyPayment;
-  document.getElementById("totalInterest").innerHTML = "%" + totalInterest;
-  document.getElementById("totalPayment").innerHTML = "$" + totalPayment;
 
-  e.preventDefault();
+
+  const indexerStats = await (loadIndexerData(addressVar));
+
+  // check if indexer stats is null
+  if(!indexerStats){
+    alert("Please enter the correct Indexer Address");
+    //return
+
+  }
+  const price = await (getPriceInUsd());
+  const priceInUsd = parseFloat(price);
+  console.log(priceInUsd);
+
+  console.log(indexerStats);
+
+  const indexingRewardCut = parseFloat(indexerStats.indexingRewardCut)/Math.pow(10,4).toFixed(2);
+
+  const queryFeeCut = parseFloat(indexerStats.queryFeeCut)/Math.pow(10,4).toFixed(2);
+  const indexerStakedTokens = parseFloat(((indexerStats.stakedTokens)/Math.pow(10,18)).toFixed(2));
+  const delegatedTokens = parseFloat(((indexerStats.delegatedTokens)/Math.pow(10,18)).toFixed(2));
+  console.log(delegatedTokens);
+  console.log(indexerStakedTokens);
+
+  const totalIndexerAllocation = indexerStakedTokens + delegatedTokens;
+  console.log(totalIndexerAllocation);
+
+
+  const monthlyProtocolRewards = parseFloat("25000000");
+  console.log(monthlyProtocolRewards);
+
+
+  const totalRewards = ((totalIndexerAllocation/totalTokensAllocated) * monthlyProtocolRewards).toFixed(2);
+  console.log(totalRewards);
+
+  //check overdelegation
+  const delegationRatio = delegatedTokens/indexerStakedTokens;
+  if (delegationRatio > 16) {
+    alert("This Indexer is overdelegated, Dont Delegate to this Indexer !!")
+
+    // pop up
+  }
+  console.log("hgfhgffghfh")
+
+  const yourDelegationShare = (((amount/delegatedTokens) * (100-indexingRewardCut) * totalRewards)/100).toFixed(2);
+  console.log(yourDelegationShare);
+
+  const yearlyDelegationProfit = yourDelegationShare * 12
+  const apy = ((yearlyDelegationProfit/amount)*100).toFixed(2);
+  const monthlyAmountInUsd = (yourDelegationShare*priceInUsd).toFixed(2);
+
+
+
+ document.getElementById("monthlyPayment").innerHTML = yourDelegationShare + " GRT";
+
+  document.getElementById("totalInterest").innerHTML = apy +" %";
+  document.getElementById("totalPayment").innerHTML = "$ " + monthlyAmountInUsd;
 
 }
 
@@ -77,24 +157,30 @@ const computeResults = (e) => {
       <section className="section">
         <div className="container">
           <div className="content">
-            <h1>Simple Loan Calculator</h1>
+            <h1>GRT Delegation Rewards Calculator</h1>
             <p>
-              The Simple Loan Calculator will determine your estimated payments
-              for loan amounts, interest rates and terms.
-            </p>
+               The GRT Rewards Calculator will determine your estimated monthly GRT rewards.
+            Enter the Amount of GRT That You Want To Delegate
+            </p> <p>
+            And the
+           Address of The Indexer That You Want To Delegate To.  </p>
+
+
+
+
           </div>
 
           <div className="columns">
             <div className="column is-three-quarters">
               <div className="card">
                 <div className="card-content">
-                  <form id="loan-form" onSubmit={computeResults}>
+                  <form id="loan-form" >
                     <div className="level">
                       {/*// <!-- Left side -->*/}
                       <div className="level-left is-marginless">
                         <div className="level-item">
                           <p className="number">1</p>
-                          Loan Amount
+                          Amount of GRT
                         </div>
                       </div>
 
@@ -119,33 +205,7 @@ const computeResults = (e) => {
                       <div className="level-left is-marginless">
                         <div className="level-item">
                           <p className="number">2</p>
-                          Interest Rate
-                        </div>
-                      </div>
-
-                      {/*// <!-- Right side -->*/}
-                      <div className="level-right">
-                        <div className="level-item">
-                          <div className="field">
-                            <div className="control has-icons-right">
-                              <input className="input" id="interest" type="number"/>
-                              <span className="icon is-small is-right">
-                              <i className="fa fa-percentage"></i>
-
-                            </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-
-                    <div className="level">
-                      {/*// <!-- Left side -->*/}
-                      <div className="level-left is-marginless">
-                        <div className="level-item">
-                          <p className="number">3</p>
-                          Number Of Years
+                          Address of Indexer
                         </div>
                       </div>
 
@@ -154,7 +214,8 @@ const computeResults = (e) => {
                         <div className="level-item">
                           <div className="field">
                             <div className="control has-icons-left">
-                              <input className="input" id="years" type="number"/>
+                              <input className="input" id="address" type="text"  />
+                              {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
                               <span className="icon is-small is-left">
                               <i className="fa fa-calendar"></i>
                             </span>
@@ -166,7 +227,7 @@ const computeResults = (e) => {
 
                     <div className="control">
                       <button
-                          className="button is-large is-fullwidth is-primary is-outlined"
+                          className="button is-large is-fullwidth is-primary is-outlined" type={"button"} onClick={computeResults}
                       >
                         Calculate
                       </button>
@@ -186,22 +247,22 @@ const computeResults = (e) => {
 
           <div className="column is-12-tablet is-6-desktop is-3-widescreen">
             <div className="notification is-primary has-text">
-              <p id="monthlyPayment" className="title is-1">$</p>
-              <p className="subtitle is-4">Monthly Payments</p>
+              <p id="monthlyPayment" className="title is-1">GRT</p>
+              <p className="subtitle is-4">Monthly Rewards in GRT</p>
             </div>
           </div>
 
           <div className="column is-12-tablet is-6-desktop is-3-widescreen">
             <div className="notification is-info has-text">
               <p id="totalInterest" className="title is-1">%</p>
-              <p className="subtitle is-4">Total Interest</p>
+              <p className="subtitle is-4">Estimated APY</p>
             </div>
           </div>
 
           <div className="column is-12-tablet is-6-desktop is-3-widescreen">
             <div className="notification is-link has-text">
               <p id="totalPayment" className="title is-1">$</p>
-              <p className="subtitle is-4">Total Amount</p>
+              <p className="subtitle is-4">Monthly Amount in USD</p>
             </div>
           </div>
 
