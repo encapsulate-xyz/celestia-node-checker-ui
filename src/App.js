@@ -62,7 +62,7 @@ async function getPriceInUsd() {
 
 
 function App() {
-  const button = document.getElementById('my-button');
+  const button = document.getElementById('button');
 if(button)
   button.addEventListener('click', (e) => {
     console.log('Calculating...');
@@ -600,7 +600,7 @@ const computeResults =   async () => {
                     </div>
 
                     <div id="my-button" className="control">
-                      <button
+                      <button id = "button"
                           className="button is-large is-fullwidth is-primary is-outlined" type={"button"}
                       >
                       </button>
