@@ -39,14 +39,14 @@
 
 
 
-.button{
+form .button{
   position: relative;
   width: 100%;
-  height: 33px;
+  height: 36px;                              /* width of button*/
   margin: 0.5rem 0 0;
   padding: 0;
-  background-color: #8d9aa6;
-  border: none;
+  background-color: #8d9aa6;               /*initial background color*/
+  border: solid;
   border-radius: 0.3125rem;
   color: white;
   font-size: 0.75rem;
@@ -56,18 +56,18 @@
   overflow: hidden;
 }
 
-.button:before {
+form .button:before {
   content: 'Calculate';
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.button.loading:before, form .button.loading:after {
+form .button.loading:before, form .button.loading:after {
   position: absolute;
   top: 0;
   left: 0;
 }
-.button.loading:before {
+form .button.loading:before {
   content: 'LOADING';
   display: flex;
   align-items: center;
@@ -79,11 +79,11 @@
   font-weight: bold;
   z-index: 1;
 }
-.button.loading:after {
+form .button.loading:after {
   content: '';
   width: 0%;
   height: 100%;
-  background-color: #2ecc71;
+  background-color: #a3a524;            /*Loading background color*/
   animation: loading 2s ease;
   z-index: 0;
 }
@@ -92,7 +92,7 @@
     width: 100%;
   }
 }
-.button:hover {
+form .button:hover {
   background-color: slategray;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
