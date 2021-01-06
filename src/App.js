@@ -171,7 +171,7 @@ function App() {
                                                                 <input className="input" id="address" type="text"/>
                                                                 {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
                                                                 <span className="icon is-small is-left">
-                              <i className="fa fa-calendar"></i>
+                              <i className="fa fa-home"></i>
                             </span>
                                                             </div>
                                                         </div>
@@ -304,7 +304,7 @@ function App() {
                                                                 <input className="input" id="address" type="text"/>
                                                                 {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
                                                                 <span className="icon is-small is-left">
-                              <i className="fa fa-calendar"></i>
+                              <i className="fa fa-home"></i>
                             </span>
                                                             </div>
                                                         </div>
@@ -394,7 +394,6 @@ function App() {
             button.classList.remove('loading');
 
             document.getElementById("monthlyPayment").innerHTML = "GRT";
-
             document.getElementById("totalInterest").innerHTML = "%";
             document.getElementById("totalPayment").innerHTML = "$ ";
 
@@ -462,7 +461,7 @@ function App() {
                                                                 <input className="input" id="address" type="text"/>
                                                                 {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
                                                                 <span className="icon is-small is-left">
-                              <i className="fa fa-calendar"></i>
+                              <i className="fa fa-home"></i>
                             </span>
                                                             </div>
                                                         </div>
@@ -601,7 +600,7 @@ function App() {
                                                         <input className="input" id="address" type="text"/>
                                                         {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
                                                         <span className="icon is-small is-left">
-                              <i className="fa fa-calendar"></i>
+                              <i className="fa fa-home"></i>
                             </span>
                                                     </div>
                                                 </div>
