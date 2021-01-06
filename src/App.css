@@ -42,7 +42,7 @@
 form .button{
   position: relative;
   width: 100%;
-  height: 36px;                              /* width of button*/
+  height: 70px;                              /* width of button*/
   margin: 0.5rem 0 0;
   padding: 0;
   background-color: #8d9aa6;               /*initial background color*/
@@ -57,10 +57,11 @@ form .button{
 }
 
 form .button:before {
-  content: 'Calculate';
+  content: 'Calculate Rewards';
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: bold;
 }
 form .button.loading:before, form .button.loading:after {
   position: absolute;
@@ -68,14 +69,14 @@ form .button.loading:before, form .button.loading:after {
   left: 0;
 }
 form .button.loading:before {
-  content: 'LOADING';
+  content: 'Calculating...';
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: whitesmoke;
-  font-size: 0.75rem;
+  color: white;
+  font-size: 1.45rem;
   font-weight: bold;
   z-index: 1;
 }
@@ -83,8 +84,8 @@ form .button.loading:after {
   content: '';
   width: 0%;
   height: 100%;
-  background-color: #a3a524;            /*Loading background color*/
-  animation: loading 2s ease;
+  background-color: #7fffd4	;            /*Loading background color*/
+  animation: loading 7s ease;
   z-index: 0;
 }
 @keyframes loading {
