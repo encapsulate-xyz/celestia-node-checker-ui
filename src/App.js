@@ -101,7 +101,8 @@ function App() {
         console.log();
         if ((!amount) || (!addressVar)) {
             alert("Please enter Proper Values");
-            button.classList.remove('loading');
+            if (button)
+                button.classList.remove('loading');
 
             document.getElementById("monthlyPayment").innerHTML = "GRT";
 
@@ -196,7 +197,7 @@ function App() {
 
                 {/*// <!-- RESULTS -->*/}
                 <section className="section">
-                    <h1 className="title ">Calculated Results</h1>
+                    <h1 className="title ">Calculated Rewards</h1>
                     <div className="columns is-multiline">
 
                         <div className="column is-12-tablet is-6-desktop is-3-widescreen">
@@ -234,7 +235,8 @@ function App() {
         // check if indexer stats is null
         if (!indexerStats) {
             alert("Please enter the correct Indexer Address");
-            button.classList.remove('loading');
+            if (button)
+                button.classList.remove('loading');
 
             document.getElementById("monthlyPayment").innerHTML = "GRT";
 
@@ -329,7 +331,7 @@ function App() {
 
                 {/*// <!-- RESULTS -->*/}
                 <section className="section">
-                    <h1 className="title ">Calculated Results</h1>
+                    <h1 className="title ">Calculated Rewards</h1>
                     <div className="columns is-multiline">
 
                         <div className="column is-12-tablet is-6-desktop is-3-widescreen">
@@ -391,7 +393,8 @@ function App() {
         const delegationRatio = delegatedTokens / indexerStakedTokens;
         if (delegationRatio > 16) {
             alert("This Indexer is overdelegated, Don't Delegate to this Indexer !!")
-            button.classList.remove('loading');
+            if (button)
+                button.classList.remove('loading');
 
             document.getElementById("monthlyPayment").innerHTML = "GRT";
             document.getElementById("totalInterest").innerHTML = "%";
@@ -486,7 +489,7 @@ function App() {
 
                 {/*// <!-- RESULTS -->*/}
                 <section className="section">
-                    <h1 className="title ">Calculated Results</h1>
+                    <h1 className="title ">Calculated Rewards</h1>
                     <div className="columns is-multiline">
 
                         <div className="column is-12-tablet is-6-desktop is-3-widescreen">
@@ -625,7 +628,7 @@ function App() {
 
         {/*// <!-- RESULTS -->*/}
         <section className="section">
-            <h1 className="title ">Calculated Results</h1>
+            <h1 className="title ">Calculated Rewards</h1>
             <div className="columns is-multiline">
 
                 <div className="column is-12-tablet is-6-desktop is-3-widescreen">
