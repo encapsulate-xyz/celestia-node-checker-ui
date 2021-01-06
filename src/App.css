@@ -75,7 +75,7 @@ form .button.loading:before {
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: white;
+  color: black;
   font-size: 1.45rem;
   font-weight: bold;
   z-index: 1;
@@ -85,7 +85,7 @@ form .button.loading:after {
   width: 0%;
   height: 100%;
   background-color: #7fffd4	;            /*Loading background color*/
-  animation: loading 7s ease;
+  animation: loading 10s ease;
   z-index: 0;
 }
 @keyframes loading {

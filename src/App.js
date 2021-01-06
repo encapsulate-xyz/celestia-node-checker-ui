@@ -23,6 +23,7 @@ async function getNetworkStats() {
 async function loadNetworkData(setTotalTokensAllocated) {
     const networkStats = await getNetworkStats();
     setTotalTokensAllocated(networkStats)
+    console.log("Done now")
 
 }
 
@@ -62,18 +63,22 @@ async function getPriceInUsd() {
 
 
 function App() {
+
     const button = document.getElementById('button');
-    if (button)
-        button.addEventListener('click', () => {
-            console.log('Calculating...');
-            // show loader
-            button.classList.add('loading');
 
-            // set timeout
-            setTimeout(computeResults, 5000);
+    const load = async () => {
 
-        });
+            // button.addEventListener('click', () => {
+                console.log('Calculating...');
+                // show loader
+        if (button)
+                button.classList.add('loading');
 
+                // set timeout
+                setTimeout(computeResults, 5000);
+
+            // });
+    }
 
     const [totalTokensAllocated, setTotalTokensAllocated] = useState([]);
 
@@ -385,7 +390,7 @@ function App() {
         //check overdelegation
         const delegationRatio = delegatedTokens / indexerStakedTokens;
         if (delegationRatio > 16) {
-            alert("This Indexer is overdelegated, Dont Delegate to this Indexer !!")
+            alert("This Indexer is overdelegated, Don't Delegate to this Indexer !!")
             button.classList.remove('loading');
 
             document.getElementById("monthlyPayment").innerHTML = "GRT";
@@ -607,7 +612,7 @@ function App() {
                                     <div id="my-button" className="control">
                                         <button id="button"
                                                 className="button is-large is-fullwidth is-primary is-outlined"
-                                                type={"button"}
+                                                type={"button"} onClick={load}
                                         >
                                         </button>
                                     </div>
@@ -647,6 +652,7 @@ function App() {
 
             </div>
         </section>
+
 
 
         </body>
