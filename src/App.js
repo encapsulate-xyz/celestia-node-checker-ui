@@ -535,6 +535,7 @@ function App() {
 
         document.getElementById("totalInterest").innerHTML = apy + " %";
         document.getElementById("totalPayment").innerHTML = "$ " + monthlyAmountInUsd;
+        if (button)
         button.classList.remove('loading');
 
     }
