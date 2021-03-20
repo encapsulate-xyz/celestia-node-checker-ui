@@ -113,17 +113,16 @@ function App() {
                 <body>
                 <section className="section">
                     <div className="container">
+                        <br/>
+                        <br/>
+                        <br/>
                         <div className="content">
-                            <h1>GRT Delegation Rewards Calculator</h1>
-                            <p>
-                                The GRT Rewards Calculator will determine your estimated monthly GRT rewards.
-                                Enter the Amount of GRT That You Want To Delegate
-                            </p> <p>
-                            And the
-                            Address of The Indexer That You Want To Delegate To. </p>
+                            <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> GRT Delegation Rewards Calculator </u> ⭐  </h1>
+
 
 
                         </div>
+                        <br/>
 
                         <div className="columns">
                             <div className="column is-three-quarters">
@@ -135,7 +134,7 @@ function App() {
                                                 <div className="level-left is-marginless">
                                                     <div className="level-item">
                                                         <p className="number">1</p>
-                                                        Amount of GRT
+                                                        <h1> <b>Amount of GRT</b>   </h1>
                                                     </div>
                                                 </div>
 
@@ -160,7 +159,7 @@ function App() {
                                                 <div className="level-left is-marginless">
                                                     <div className="level-item">
                                                         <p className="number">2</p>
-                                                        Address of Indexer
+                                                        <h1><b> Address of Indexer</b></h1>
                                                     </div>
                                                 </div>
 
@@ -247,17 +246,16 @@ function App() {
                 <body>
                 <section className="section">
                     <div className="container">
+                        <br/>
+                        <br/>
+                        <br/>
                         <div className="content">
-                            <h1>GRT Delegation Rewards Calculator</h1>
-                            <p>
-                                The GRT Rewards Calculator will determine your estimated monthly GRT rewards.
-                                Enter the Amount of GRT That You Want To Delegate
-                            </p> <p>
-                            And the
-                            Address of The Indexer That You Want To Delegate To. </p>
+                            <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> GRT Delegation Rewards Calculator </u> ⭐  </h1>
+
 
 
                         </div>
+                        <br/>
 
                         <div className="columns">
                             <div className="column is-three-quarters">
@@ -269,7 +267,7 @@ function App() {
                                                 <div className="level-left is-marginless">
                                                     <div className="level-item">
                                                         <p className="number">1</p>
-                                                        Amount of GRT
+                                                        <h1> <b>Amount of GRT</b>   </h1>
                                                     </div>
                                                 </div>
 
@@ -294,7 +292,7 @@ function App() {
                                                 <div className="level-left is-marginless">
                                                     <div className="level-item">
                                                         <p className="number">2</p>
-                                                        Address of Indexer
+                                                        <h1><b> Address of Indexer</b></h1>
                                                     </div>
                                                 </div>
 
@@ -405,17 +403,15 @@ function App() {
                 <body>
                 <section className="section">
                     <div className="container">
+                        <br/>
+                        <br/>
+                        <br/>
                         <div className="content">
-                            <h1>GRT Delegation Rewards Calculator</h1>
-                            <p>
-                                The GRT Rewards Calculator will determine your estimated monthly GRT rewards.
-                                Enter the Amount of GRT That You Want To Delegate
-                            </p> <p>
-                            And the
-                            Address of The Indexer That You Want To Delegate To. </p>
+                            <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> GRT Delegation Rewards Calculator </u> ⭐  </h1>
 
 
                         </div>
+                        <br/>
 
                         <div className="columns">
                             <div className="column is-three-quarters">
@@ -427,7 +423,7 @@ function App() {
                                                 <div className="level-left is-marginless">
                                                     <div className="level-item">
                                                         <p className="number">1</p>
-                                                        Amount of GRT
+                                                        <h1> <b>Amount of GRT</b>   </h1>
                                                     </div>
                                                 </div>
 
@@ -452,7 +448,7 @@ function App() {
                                                 <div className="level-left is-marginless">
                                                     <div className="level-item">
                                                         <p className="number">2</p>
-                                                        Address of Indexer
+                                                      <h1><b> Address of Indexer</b></h1>
                                                     </div>
                                                 </div>
 
@@ -545,17 +541,14 @@ function App() {
         <body>
         <section className="section">
             <div className="container">
+                <br/>
+                <br/>
+                <br/>
                 <div className="content">
-                    <h1>GRT Delegation Rewards Calculator</h1>
-                    <p>
-                        The GRT Rewards Calculator will determine your estimated monthly GRT rewards.
-                        Enter the Amount of GRT That You Want To Delegate
-                    </p> <p>
-                    And the
-                    Address of The Indexer That You Want To Delegate To. </p>
-
+                    <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> GRT Delegation Rewards Calculator </u> ⭐  </h1>
 
                 </div>
+            <br/>
 
                 <div className="columns">
                     <div className="column is-three-quarters">
@@ -567,7 +560,7 @@ function App() {
                                         <div className="level-left is-marginless">
                                             <div className="level-item">
                                                 <p className="number">1</p>
-                                                Amount of GRT
+                                                <h1> <b>Amount of GRT</b>   </h1>
                                             </div>
                                         </div>
 
@@ -592,7 +585,7 @@ function App() {
                                         <div className="level-left is-marginless">
                                             <div className="level-item">
                                                 <p className="number">2</p>
-                                                Address of Indexer
+                                                <h1><b> Address of Indexer</b></h1>
                                             </div>
                                         </div>
 
