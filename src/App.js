@@ -3,62 +3,42 @@ import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 
 
-const baseURL = "https://api.thegraph.com/subgraphs/name/graphprotocol/graph-network-mainnet";
-const priceURL = "https://api.coingecko.com/api/v3/simple/price?ids=the-graph&vs_currencies=usd";
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+// Variables to change when coding this app for soemthing else
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+const textField = "Node IP"
+const numField = "Port"
 
 
-async function getNetworkStats() {
-    const query = `
-{
-  graphNetworks(first: 1) {
-    totalTokensAllocated
-    delegationRatio
-  }
-}
-  `;
-    const res = await axios.post(baseURL, {query});
-    return parseFloat(((res.data.data.graphNetworks[0].totalTokensAllocated) / Math.pow(10, 18)).toFixed(2));
-}
+const textFieldNumber = "1"
+const numFieldNumber = "2"
+
+
+const Box1Text = "Node Version"
+const Box2Text = "Sync Percentage"
+const Box3Text = "Node TPS"
+
+
+
+const Box1Suffix = " ℹ️"
+const Box2Suffix = " 📩"
+const Box3Suffix = " ⚡"
+
+
+const appTitle = "Sui Node Health Checker"
+const resultRowTitle = "Sui Node Health Checker"
+
+
+
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 async function loadNetworkData(setTotalTokensAllocated) {
-    const networkStats = await getNetworkStats();
-    setTotalTokensAllocated(networkStats)
+    setTotalTokensAllocated("networkStats")
     console.log("Done now")
 
-}
-
-
-async function getIndexerStats(address) {
-    const query = `
-{
-  indexer(id: "${address}") {
-    indexingRewardCut
-    queryFeeCut
-    stakedTokens
-    delegatedTokens
-    queryFeesCollected
-    rewardsEarned
-  }
-}
-  `;
-    const res = await axios.post(baseURL, {query});
-    return res.data;
-}
-
-async function getPriceStats() {
-    const res = await axios.get(priceURL);
-    return res.data;
-}
-
-async function loadIndexerData(address) {
-    const indexerStats = await getIndexerStats(address);
-    return indexerStats.data.indexer;
-}
-
-
-async function getPriceInUsd() {
-    const priceStats = await getPriceStats();
-    return priceStats["the-graph"].usd;
 }
 
 
@@ -75,7 +55,7 @@ function App() {
                 button.classList.add('loading');
 
                 // set timeout
-                setTimeout(computeResults, 5000);
+                setTimeout(computeResults, 7000);
 
             // });
     }
@@ -104,438 +84,46 @@ function App() {
             if (button)
                 button.classList.remove('loading');
 
-            document.getElementById("monthlyPayment").innerHTML = "GRT";
+            document.getElementById("monthlyPayment").innerHTML = Box1Suffix;
 
-            document.getElementById("totalInterest").innerHTML = "%";
-            document.getElementById("totalPayment").innerHTML = "$ ";
+            document.getElementById("totalInterest").innerHTML = Box2Suffix
+            document.getElementById("totalPayment").innerHTML = Box3Suffix;
             //return
-            return (
-                <body>
-                <section className="section">
-                    <div className="container">
-                        <br/>
-                        <br/>
-                        <br/>
-                        <div className="content">
-                            <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> GRT Delegation Rewards Calculator </u> ⭐  </h1>
-
-
-
-                        </div>
-                        <br/>
-
-                        <div className="columns">
-                            <div className="column is-three-quarters">
-                                <div className="card">
-                                    <div className="card-content">
-                                        <form id="loan-form">
-                                            <div className="level">
-                                                {/*// <!-- Left side -->*/}
-                                                <div className="level-left is-marginless">
-                                                    <div className="level-item">
-                                                        <p className="number">1</p>
-                                                        <h1> <b>Amount of GRT</b>   </h1>
-                                                    </div>
-                                                </div>
-
-                                                {/*// <!-- Right side -->*/}
-                                                <div className="level-right">
-                                                    <div className="level-item">
-                                                        <div className="field">
-                                                            <div className="control has-icons-left ">
-                                                                <input className="input" id="amount" type="number"/>
-                                                                <span className="icon is-small is-left">
-                              <i className="fa fa-dollar-sign"></i>
-                            </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div className="level">
-                                                {/*// <!-- Left side -->*/}
-                                                <div className="level-left is-marginless">
-                                                    <div className="level-item">
-                                                        <p className="number">2</p>
-                                                        <h1><b> Address of Indexer</b></h1>
-                                                    </div>
-                                                </div>
-
-                                                {/*// <!-- Right side -->*/}
-                                                <div className="level-right">
-                                                    <div className="level-item">
-                                                        <div className="field">
-                                                            <div className="control has-icons-left">
-                                                                <input className="input" id="address" type="text"/>
-                                                                {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
-                                                                <span className="icon is-small is-left">
-                              <i className="fa fa-home"></i>
-                            </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div id="my-button" className="control">
-                                                <button
-                                                    className="button is-large is-fullwidth is-primary is-outlined"
-                                                    type={"button"}
-                                                >
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/*// <!-- RESULTS -->*/}
-                <section className="section">
-                    <h1 className="title ">Calculated Rewards</h1>
-                    <div className="columns is-multiline">
-
-                        <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                            <div className="notification is-primary has-text">
-                                <p id="monthlyPayment" className="title is-1">GRT</p>
-                                <p className="subtitle is-4">Monthly Rewards in GRT</p>
-                            </div>
-                        </div>
-
-                        <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                            <div className="notification is-info has-text">
-                                <p id="totalInterest" className="title is-1">%</p>
-                                <p className="subtitle is-4">Estimated APY</p>
-                            </div>
-                        </div>
-
-                        <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                            <div className="notification is-link has-text">
-                                <p id="totalPayment" className="title is-1">$</p>
-                                <p className="subtitle is-4">Monthly Amount in USD</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </section>
-
-
-                </body>
-            );
+            return returnApp()
         }
 
+        // const response = await axios.get(`${IP}/peggo?lcd=https://umee-api.polkachu.com&orchAddress=${addressVar}`);
+        const response = await axios.get(`https://web-backend.scale3production.com/v1/sui_node_check?network_type=devnet&url=${addressVar}:${amount}`);
+        let result = response.data
+        console.log(result)
 
-        const indexerStats = await (loadIndexerData(addressVar));
+
 
         // check if indexer stats is null
-        if (!indexerStats) {
-            alert("Please enter the correct Indexer Address");
+        if (!result || !result.node_total_transactions) {
+            alert("Unable to reach the node");
             if (button)
                 button.classList.remove('loading');
 
-            document.getElementById("monthlyPayment").innerHTML = "GRT";
+            document.getElementById("monthlyPayment").innerHTML = Box1Suffix;
 
-            document.getElementById("totalInterest").innerHTML = "%";
-            document.getElementById("totalPayment").innerHTML = "$ ";
+            document.getElementById("totalInterest").innerHTML = Box2Suffix
+            document.getElementById("totalPayment").innerHTML = Box3Suffix;
             //return
-            return (
-                <body>
-                <section className="section">
-                    <div className="container">
-                        <br/>
-                        <br/>
-                        <br/>
-                        <div className="content">
-                            <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> GRT Delegation Rewards Calculator </u> ⭐  </h1>
-
-
-
-                        </div>
-                        <br/>
-
-                        <div className="columns">
-                            <div className="column is-three-quarters">
-                                <div className="card">
-                                    <div className="card-content">
-                                        <form id="loan-form">
-                                            <div className="level">
-                                                {/*// <!-- Left side -->*/}
-                                                <div className="level-left is-marginless">
-                                                    <div className="level-item">
-                                                        <p className="number">1</p>
-                                                        <h1> <b>Amount of GRT</b>   </h1>
-                                                    </div>
-                                                </div>
-
-                                                {/*// <!-- Right side -->*/}
-                                                <div className="level-right">
-                                                    <div className="level-item">
-                                                        <div className="field">
-                                                            <div className="control has-icons-left ">
-                                                                <input className="input" id="amount" type="number"/>
-                                                                <span className="icon is-small is-left">
-                              <i className="fa fa-dollar-sign"></i>
-                            </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div className="level">
-                                                {/*// <!-- Left side -->*/}
-                                                <div className="level-left is-marginless">
-                                                    <div className="level-item">
-                                                        <p className="number">2</p>
-                                                        <h1><b> Address of Indexer</b></h1>
-                                                    </div>
-                                                </div>
-
-                                                {/*// <!-- Right side -->*/}
-                                                <div className="level-right">
-                                                    <div className="level-item">
-                                                        <div className="field">
-                                                            <div className="control has-icons-left">
-                                                                <input className="input" id="address" type="text"/>
-                                                                {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
-                                                                <span className="icon is-small is-left">
-                              <i className="fa fa-home"></i>
-                            </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div id="my-button" className="control">
-                                                <button
-                                                    className="button is-large is-fullwidth is-primary is-outlined"
-                                                    type={"button"}
-                                                >
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/*// <!-- RESULTS -->*/}
-                <section className="section">
-                    <h1 className="title ">Calculated Rewards</h1>
-                    <div className="columns is-multiline">
-
-                        <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                            <div className="notification is-primary has-text">
-                                <p id="monthlyPayment" className="title is-1">GRT</p>
-                                <p className="subtitle is-4">Monthly Rewards in GRT</p>
-                            </div>
-                        </div>
-
-                        <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                            <div className="notification is-info has-text">
-                                <p id="totalInterest" className="title is-1">%</p>
-                                <p className="subtitle is-4">Estimated APY</p>
-                            </div>
-                        </div>
-
-                        <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                            <div className="notification is-link has-text">
-                                <p id="totalPayment" className="title is-1">$</p>
-                                <p className="subtitle is-4">Monthly Amount in USD</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </section>
-
-
-                </body>
-            );
-
-
+            return returnApp()
         }
-        const price = await (getPriceInUsd());
-        const priceInUsd = parseFloat(price);
-        console.log(priceInUsd);
 
-        console.log(indexerStats);
-
-        const indexingRewardCut = parseFloat(indexerStats.indexingRewardCut) / Math.pow(10, 4).toFixed(2);
-
-        const queryFeeCut = parseFloat(indexerStats.queryFeeCut) / Math.pow(10, 4).toFixed(2);
-        const indexerStakedTokens = parseFloat(((indexerStats.stakedTokens) / Math.pow(10, 18)).toFixed(2));
-        const delegatedTokens = parseFloat(((indexerStats.delegatedTokens) / Math.pow(10, 18)).toFixed(2));
-        console.log(delegatedTokens);
-        console.log(indexerStakedTokens);
-
-        const totalIndexerAllocation = indexerStakedTokens + delegatedTokens;
-        console.log(totalIndexerAllocation);
+        const syncPercentage = ((parseFloat(result.node_total_transactions) * 100) / parseFloat(result.network_total_transactions)).toFixed(0);
 
 
-        const monthlyProtocolRewards = parseFloat("25000000");
-        console.log(monthlyProtocolRewards);
+        document.getElementById("monthlyPayment").innerHTML = result.node_version + " " + Box1Suffix;
 
-
-        const totalRewards = ((totalIndexerAllocation / totalTokensAllocated) * monthlyProtocolRewards).toFixed(2);
-        console.log(totalRewards);
-
-        //check overdelegation
-        const delegationRatio = delegatedTokens / indexerStakedTokens;
-        if (delegationRatio > 16) {
-            alert("This Indexer is overdelegated, Don't Delegate to this Indexer !!")
-            if (button)
-                button.classList.remove('loading');
-
-            document.getElementById("monthlyPayment").innerHTML = "GRT";
-            document.getElementById("totalInterest").innerHTML = "%";
-            document.getElementById("totalPayment").innerHTML = "$ ";
-
-
-            return (
-                <body>
-                <section className="section">
-                    <div className="container">
-                        <br/>
-                        <br/>
-                        <br/>
-                        <div className="content">
-                            <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> GRT Delegation Rewards Calculator </u> ⭐  </h1>
-
-
-                        </div>
-                        <br/>
-
-                        <div className="columns">
-                            <div className="column is-three-quarters">
-                                <div className="card">
-                                    <div className="card-content">
-                                        <form id="loan-form">
-                                            <div className="level">
-                                                {/*// <!-- Left side -->*/}
-                                                <div className="level-left is-marginless">
-                                                    <div className="level-item">
-                                                        <p className="number">1</p>
-                                                        <h1> <b>Amount of GRT</b>   </h1>
-                                                    </div>
-                                                </div>
-
-                                                {/*// <!-- Right side -->*/}
-                                                <div className="level-right">
-                                                    <div className="level-item">
-                                                        <div className="field">
-                                                            <div className="control has-icons-left ">
-                                                                <input className="input" id="amount" type="number"/>
-                                                                <span className="icon is-small is-left">
-                              <i className="fa fa-dollar-sign"></i>
-                            </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div className="level">
-                                                {/*// <!-- Left side -->*/}
-                                                <div className="level-left is-marginless">
-                                                    <div className="level-item">
-                                                        <p className="number">2</p>
-                                                      <h1><b> Address of Indexer</b></h1>
-                                                    </div>
-                                                </div>
-
-                                                {/*// <!-- Right side -->*/}
-                                                <div className="level-right">
-                                                    <div className="level-item">
-                                                        <div className="field">
-                                                            <div className="control has-icons-left">
-                                                                <input className="input" id="address" type="text"/>
-                                                                {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
-                                                                <span className="icon is-small is-left">
-                              <i className="fa fa-home"></i>
-                            </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div id="my-button" className="control">
-                                                <button
-                                                    className="button is-large is-fullwidth is-primary is-outlined"
-                                                    type={"button"}
-                                                >
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/*// <!-- RESULTS -->*/}
-                <section className="section">
-                    <h1 className="title ">Calculated Rewards</h1>
-                    <div className="columns is-multiline">
-
-                        <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                            <div className="notification is-primary has-text">
-                                <p id="monthlyPayment" className="title is-1">GRT</p>
-                                <p className="subtitle is-4">Monthly Rewards in GRT</p>
-                            </div>
-                        </div>
-
-                        <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                            <div className="notification is-info has-text">
-                                <p id="totalInterest" className="title is-1">%</p>
-                                <p className="subtitle is-4">Estimated APY</p>
-                            </div>
-                        </div>
-
-                        <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                            <div className="notification is-link has-text">
-                                <p id="totalPayment" className="title is-1">$</p>
-                                <p className="subtitle is-4">Monthly Amount in USD</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </section>
-
-
-                </body>
-            );
-            // pop up
-        }
-        console.log("hgfhgffghfh")
-
-        const yourDelegationShare = (((amount / delegatedTokens) * (100 - indexingRewardCut) * totalRewards) / 100).toFixed(2);
-        console.log(yourDelegationShare);
-
-        const yearlyDelegationProfit = yourDelegationShare * 12
-        const apy = ((yearlyDelegationProfit / amount) * 100).toFixed(2);
-        const monthlyAmountInUsd = (yourDelegationShare * priceInUsd).toFixed(2);
-
-
-        document.getElementById("monthlyPayment").innerHTML = yourDelegationShare + " GRT";
-
-        document.getElementById("totalInterest").innerHTML = apy + " %";
-        document.getElementById("totalPayment").innerHTML = "$ " + monthlyAmountInUsd;
+        document.getElementById("totalInterest").innerHTML = syncPercentage + " " + Box2Suffix;
+        document.getElementById("totalPayment").innerHTML = result.node_tps + " % " + Box3Suffix;
         if (button)
-        button.classList.remove('loading');
+            button.classList.remove('loading');
 
     }
-
 
     return (
         <body>
@@ -545,10 +133,10 @@ function App() {
                 <br/>
                 <br/>
                 <div className="content">
-                    <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> GRT Delegation Rewards Calculator </u> ⭐  </h1>
+                    <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> {appTitle} </u> ⭐  </h1>
 
                 </div>
-            <br/>
+                <br/>
 
                 <div className="columns">
                     <div className="column is-three-quarters">
@@ -559,33 +147,8 @@ function App() {
                                         {/*// <!-- Left side -->*/}
                                         <div className="level-left is-marginless">
                                             <div className="level-item">
-                                                <p className="number">1</p>
-                                                <h1> <b>Amount of GRT</b>   </h1>
-                                            </div>
-                                        </div>
-
-                                        {/*// <!-- Right side -->*/}
-                                        <div className="level-right">
-                                            <div className="level-item">
-                                                <div className="field">
-                                                    <div className="control has-icons-left ">
-                                                        <input className="input" id="amount" type="number"/>
-                                                        <span className="icon is-small is-left">
-                              <i className="fa fa-dollar-sign"></i>
-                            </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="level">
-                                        {/*// <!-- Left side -->*/}
-                                        <div className="level-left is-marginless">
-                                            <div className="level-item">
-                                                <p className="number">2</p>
-                                                <h1><b> Address of Indexer</b></h1>
+                                                <p className="number">{textFieldNumber}</p>
+                                                <h1><b>{textField}</b></h1>
                                             </div>
                                         </div>
 
@@ -604,7 +167,29 @@ function App() {
                                             </div>
                                         </div>
                                     </div>
+                                    <div className="level">
+                                        {/*// <!-- Left side -->*/}
+                                        <div className="level-left is-marginless">
+                                            <div className="level-item">
+                                                <p className="number">{numFieldNumber}</p>
+                                                <h1> <b>{numField}</b>   </h1>
+                                            </div>
+                                        </div>
 
+                                        {/*// <!-- Right side -->*/}
+                                        <div className="level-right">
+                                            <div className="level-item">
+                                                <div className="field">
+                                                    <div className="control has-icons-left ">
+                                                        <input className="input" id="amount" type="number"/>
+                                                        <span className="icon is-small is-left">
+                              <i className="fa fa-dollar-sign"></i>
+                            </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div id="my-button" className="control">
                                         <button id="button"
                                                 className="button is-large is-fullwidth is-primary is-outlined"
@@ -622,27 +207,145 @@ function App() {
 
         {/*// <!-- RESULTS -->*/}
         <section className="section">
-            <h1 className="title ">Calculated Rewards</h1>
+            <h1 className="title ">{resultRowTitle}</h1>
             <div className="columns is-multiline">
 
                 <div className="column is-12-tablet is-6-desktop is-3-widescreen">
                     <div className="notification is-primary has-text">
-                        <p id="monthlyPayment" className="title is-1">GRT</p>
-                        <p className="subtitle is-4">Monthly Rewards in GRT</p>
+                        <p id="monthlyPayment" className="title is-1">{Box1Suffix}</p>
+                        <p className="subtitle is-4">{Box1Text}</p>
                     </div>
                 </div>
 
                 <div className="column is-12-tablet is-6-desktop is-3-widescreen">
                     <div className="notification is-info has-text">
-                        <p id="totalInterest" className="title is-1">%</p>
-                        <p className="subtitle is-4">Estimated APY</p>
+                        <p id="totalInterest" className="title is-1">{Box2Suffix}</p>
+                        <p className="subtitle is-4">{Box2Text}</p>
                     </div>
                 </div>
 
                 <div className="column is-12-tablet is-6-desktop is-3-widescreen">
                     <div className="notification is-link has-text">
-                        <p id="totalPayment" className="title is-1">$</p>
-                        <p className="subtitle is-4">Monthly Amount in USD</p>
+                        <p id="totalPayment" className="title is-1">{Box3Suffix}</p>
+                        <p className="subtitle is-4">{Box3Text}</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+
+        </body>
+    );
+}
+
+
+
+function returnApp() {
+    return (
+        <body>
+        <section className="section">
+            <div className="container">
+                <br/>
+                <br/>
+                <br/>
+                <div className="content">
+                    <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> {appTitle} </u> ⭐  </h1>
+
+                </div>
+                <br/>
+
+                <div className="columns">
+                    <div className="column is-three-quarters">
+                        <div className="card">
+                            <div className="card-content">
+                                <form id="loan-form">
+                                    <div className="level">
+                                        {/*// <!-- Left side -->*/}
+                                        <div className="level-left is-marginless">
+                                            <div className="level-item">
+                                                <p className="number">2</p>
+                                                <h1><b>{textField}</b></h1>
+                                            </div>
+                                        </div>
+
+                                        {/*// <!-- Right side -->*/}
+                                        <div className="level-right">
+                                            <div className="level-item">
+                                                <div className="field">
+                                                    <div className="control has-icons-left">
+                                                        <input className="input" id="address" type="text"/>
+                                                        {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
+                                                        <span className="icon is-small is-left">
+                              <i className="fa fa-home"></i>
+                            </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="level">
+                                        {/*// <!-- Left side -->*/}
+                                        <div className="level-left is-marginless">
+                                            <div className="level-item">
+                                                <p className="number">1</p>
+                                                <h1> <b>{numField}</b>   </h1>
+                                            </div>
+                                        </div>
+
+                                        {/*// <!-- Right side -->*/}
+                                        <div className="level-right">
+                                            <div className="level-item">
+                                                <div className="field">
+                                                    <div className="control has-icons-left ">
+                                                        <input className="input" id="amount" type="number"/>
+                                                        <span className="icon is-small is-left">
+                              <i className="fa fa-dollar-sign"></i>
+                            </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="my-button" className="control">
+                                        <button id="button"
+                                                className="button is-large is-fullwidth is-primary is-outlined"
+                                                type={"button"}
+                                        >
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {/*// <!-- RESULTS -->*/}
+        <section className="section">
+            <h1 className="title ">{resultRowTitle}</h1>
+            <div className="columns is-multiline">
+
+                <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+                    <div className="notification is-primary has-text">
+                        <p id="monthlyPayment" className="title is-1">{Box1Suffix}</p>
+                        <p className="subtitle is-4">{Box1Text}</p>
+                    </div>
+                </div>
+
+                <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+                    <div className="notification is-info has-text">
+                        <p id="totalInterest" className="title is-1">{Box2Suffix}</p>
+                        <p className="subtitle is-4">{Box2Text}</p>
+                    </div>
+                </div>
+
+                <div className="column is-12-tablet is-6-desktop is-3-widescreen">
+                    <div className="notification is-link has-text">
+                        <p id="totalPayment" className="title is-1">{Box3Suffix}</p>
+                        <p className="subtitle is-4">{Box3Text}</p>
                     </div>
                 </div>
 

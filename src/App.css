@@ -1,3 +1,8 @@
+:root {
+  --button-text: 'Check Health';
+  --button-text-while-loading: "Checking.....";
+}
+
 .App {
   text-align: center;
 }
@@ -57,7 +62,7 @@ form .button{
 }
 
 form .button:before {
-  content: 'Calculate Rewards';
+  content: var(--button-text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,7 +74,7 @@ form .button.loading:before, form .button.loading:after {
   left: 0;
 }
 form .button.loading:before {
-  content: 'Calculating...';
+  content: var(--button-text-while-loading);
   display: flex;
   align-items: center;
   justify-content: center;
