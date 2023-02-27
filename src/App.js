@@ -5,11 +5,11 @@ import React, {useState, useEffect} from 'react';
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------
-// Variables to change when coding this app for soemthing else
+// Variables to change when coding this app for something else
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 const textField = "Node IP"
-const numField = "Port"
+const numField = "RPC Port"
 
 
 const textFieldNumber = "1"
@@ -30,7 +30,8 @@ const Box3Suffix = " ⚡"
 const appTitle = "Sui Node Health Checker"
 const resultRowTitle = "Sui Node Health Checker"
 
-
+const backendUrl = "https://web-backend.scale3production.com"
+const backendApiFailureMessage = "Unable to reach the node"
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -93,7 +94,7 @@ function App() {
         }
 
         // const response = await axios.get(`${IP}/peggo?lcd=https://umee-api.polkachu.com&orchAddress=${addressVar}`);
-        const response = await axios.get(`https://web-backend.scale3production.com/v1/sui_node_check?network_type=devnet&url=${addressVar}:${amount}`);
+        const response = await axios.get(`${backendUrl}/v1/sui_node_check?network_type=devnet&url=${addressVar}:${amount}`);
         let result = response.data
         console.log(result)
 
@@ -101,7 +102,7 @@ function App() {
 
         // check if indexer stats is null
         if (!result || !result.node_total_transactions) {
-            alert("Unable to reach the node");
+            alert(`${backendApiFailureMessage}`);
             if (button)
                 button.classList.remove('loading');
 
@@ -118,8 +119,8 @@ function App() {
 
         document.getElementById("monthlyPayment").innerHTML = result.node_version + " " + Box1Suffix;
 
-        document.getElementById("totalInterest").innerHTML = syncPercentage + " " + Box2Suffix;
-        document.getElementById("totalPayment").innerHTML = result.node_tps + " % " + Box3Suffix;
+        document.getElementById("totalInterest").innerHTML = syncPercentage + " % " + Box2Suffix;
+        document.getElementById("totalPayment").innerHTML = result.node_tps + " " + Box3Suffix;
         if (button)
             button.classList.remove('loading');
 
