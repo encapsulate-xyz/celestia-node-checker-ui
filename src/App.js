@@ -1,4 +1,5 @@
 import './App.css';
+import './components/css/Button.css';
 import React, {useState} from 'react';
 import {getPeers} from './api-calls/requests/p2p-peers';
 import {ReturnApp} from "./components/AppUI";
@@ -14,32 +15,50 @@ import {getNodeInfo} from "./api-calls/requests/node-info";
 
 function App() {
     const [loadOnClick, setLoadOnClick] = useState(false);
-
     const load = async () => {
         console.log('Calculating...');
         addLoadingClass();
-        setTimeout(computeResults, 4000);
+        try {
+            await new Promise(resolve => {
+                setTimeout(computeResults, 2000); // Add a delay of 2 seconds
+            });
+        } catch (error) {
+            console.error(error);
+            handleError(config.backend.apiFailureMessage)
+        } finally {
+            removeLoadingClass();
+        }
     };
-
 
     const addLoadingClass = () => {
         const button = document.getElementById('button');
-        if (button) button.classList.add('loading');
+        if (button) {
+            button.classList.add('loading');
+            const progress = document.createElement('div');
+            progress.className = 'progress';
+            button.appendChild(progress);
+        }
     };
 
     const removeLoadingClass = () => {
         const button = document.getElementById('button');
-        if (button) button.classList.remove('loading');
+        if (button) {
+            button.classList.remove('loading');
+            const progress = button.lastChild;
+            if (progress instanceof Node) {
+                button.removeChild(progress);
+            }
+        }
     };
 
     const computeResults = async () => {
         console.log('loading');
         let {ipAddress, port, authToken} = readInput();
 
-        // todo: remove this
-        ipAddress = "165.232.182.75"
-        port = "26658"
-        authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJwdWJsaWMiLCJyZWFkIiwid3JpdGUiLCJhZG1pbiJdfQ.6Vt55wvPNw1uk5z0NB4ufPj-IOnR77pG7i0LjwtRkOU"
+        // todo: remove this: testing purpose
+        // ipAddress = "165.232.182.75"
+        // port = "26658"
+        // authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJwdWJsaWMiLCJyZWFkIiwid3JpdGUiLCJhZG1pbiJdfQ.6Vt55wvPNw1uk5z0NB4ufPj-IOnR77pG7i0LjwtRkOU"
 
 
         console.log(ipAddress, port, authToken)
@@ -105,15 +124,6 @@ function App() {
     };
 
     const updateUI = (peerCount, info, localHead, accountAddress, probabilityOfAvailability, samplingStats, apiVersion) => {
-
-        // headOfSampledChain: data.result.head_of_sampled_chain,
-        //     headOfCatchup: data.result.head_of_catchup,
-        //     networkHeadHeight: data.result.network_head_height,
-        //     concurrency: data.result.concurrency,
-        //     catchUpStatus: booleanToYesNo(data.result.catch_up_done),
-        //     isRunning: booleanToDoneInProgress(data.is_running)
-
-
         document.getElementById('resultBox-0').innerHTML = info
         document.getElementById('resultBox-1').innerHTML = accountAddress
         document.getElementById('resultBox-2').innerHTML = localHead
@@ -124,8 +134,6 @@ function App() {
         document.getElementById('resultBox-7').innerHTML = samplingStats.headOfCatchup
         document.getElementById('resultBox-8').innerHTML = samplingStats.networkHeadHeight
         document.getElementById('resultBox-9').innerHTML = apiVersion
-
-
     };
 
     return (<ReturnApp load={load} config={config}/>);

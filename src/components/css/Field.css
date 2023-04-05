@@ -1,3 +1,8 @@
+.card {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+}
+
 .level-left {
     display: flex;
     align-items: center;
@@ -13,8 +18,9 @@
 }
 
 .level-item h1 {
+    font-family: 'Courier New', Courier, monospace; /* Changed the font-family to a monospace font */
     font-size: 20px;
-    font-weight: inherit;
+    font-weight: bolder;
     margin: 0;
     transition: color 0.3s; /* Added a transition for a smooth color change on hover */
 }
@@ -37,5 +43,31 @@
 .level-item h1:hover {
     color: #0984e3;
     text-decoration: none;
-    cursor: default;
+    cursor: pointer;
+}
+
+
+.input {
+    font-family: 'Courier New', Courier, monospace; /* Changed the font-family to a monospace font */
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    font-weight: bolder;
+    color: green;
+}
+
+/* Styling for input fields on smaller screens */
+@media screen and (max-width: 768px) {
+    .input {
+        max-width: 100%;
+    }
+}
+
+/* Styling for input fields on larger screens */
+@media screen and (min-width: 1024px) {
+    .input {
+        width: 500px;; /* Updated from "width" to "max-width" */
+        max-width: 100%;
+    }
 }

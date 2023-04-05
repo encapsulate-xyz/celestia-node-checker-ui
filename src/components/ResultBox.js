@@ -11,7 +11,6 @@ export function ResultBox({ id, suffix, text, color, large }) {
             <div className={`notification ${color} has-text`}>
                 <p id={id} className="title is-1">
 
-
                 </p>
                 <p className="subtitle is-4">{suffix} {text}</p>
             </div>

@@ -1,122 +1,3 @@
-.App {
-    text-align: center;
-}
-
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-.App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-}
-
-.App-link {
-    color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-:root {
-    --button-text: 'Check Health';
-    --button-text-while-loading: "Checking.....";
-}
-
-form .button {
-    position: relative;
-    width: 100%;
-    height: 70px;
-    margin: 0.5rem 0 0;
-    padding: 0;
-    background-color: #3caea3; /* Updated to hover color */
-    border: solid;
-    border-radius: 20px;
-    color: white;
-    font-size: 1rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    transition: 0.25s;
-    overflow: hidden;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-form .button:before {
-    content: var(--button-text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-form .button.loading:before, form .button.loading:after {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-form .button.loading:before {
-    content: var(--button-text-while-loading);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    color: black;
-    font-size: 1.45rem;
-    font-weight: bold;
-    z-index: 1;
-}
-
-form .button.loading:after {
-    content: '';
-    width: 0%;
-    height: 100%;
-    background-color: #7fffd4;
-    animation: loading 10s ease;
-    z-index: 0;
-}
-
-@keyframes loading {
-    100% {
-        width: 100%;
-    }
-}
-
-form .button:hover {
-    cursor: pointer;
-    background-color: #20639b; /* Updated to normal color */
-    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
-    transform: translateY(-7px);
-}
-
-form .button:hover:not(.loading) {
-    cursor: pointer;
-    background-color: #20639b; /* Updated to normal color */
-    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
-    transform: translateY(-7px);
-}
-
-
 body {
     background-image: url("final.png");
     background-repeat: no-repeat;
@@ -131,35 +12,12 @@ html, body {
     padding: 0;
 }
 
-.card {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
 
+.title {
+    font-family: 'Courier New', Courier, monospace; /* Changed the font-family to a monospace font */
 }
 
-.notification {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
-}
+.content {
+    font-family: 'Courier New', Courier, monospace; /* Changed the font-family to a monospace font */
 
-.input {
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-}
-
-/* Styling for input fields on smaller screens */
-@media screen and (max-width: 768px) {
-    .input {
-        max-width: 100%;
-    }
-}
-
-/* Styling for input fields on larger screens */
-@media screen and (min-width: 1024px) {
-    .input {
-        width: 500px;; /* Updated from "width" to "max-width" */
-        max-width: 100%;
-    }
 }

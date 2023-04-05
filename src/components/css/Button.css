@@ -1,0 +1,69 @@
+:root {
+    --button-text: 'Check Health';
+    --button-text-while-loading: "Checking";
+}
+
+form .button {
+    width: 100%;
+    height: 60px;
+    /*background-color: rgba(76, 175, 80, 0.9)!important; !* 70% lighter with 30% transparency *!*/
+    background-color: cornflowerblue!important; /* 70% lighter with 30% transparency */
+    border-radius: 20px;
+    color: white!important;
+    font-weight: 500;
+    overflow: hidden;
+    box-shadow: 0px 8px 16px grey;
+    border: none!important;
+    font-family: 'Courier New', Courier, monospace; /* Changed the font-family to a monospace font */
+    font-size: 2.0rem!important; /* Adjust this value to your desired font size */
+}
+form .button:hover {
+    background-color: dodgerblue!important; /* Updated to darker shade of green */
+    transform: translateY(-3px);
+}
+
+
+form .button:before {
+    content: var(--button-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+form .button.loading:before {
+    content: var(--button-text-while-loading);
+    z-index: 1;
+}
+
+.loading .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 10%;
+    background-color: #ddd;
+    overflow: hidden;
+}
+
+.loading .progress::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: green;
+    transform: translateX(-100%);
+    animation: progress 2s linear forwards;
+}
+
+@keyframes progress {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
