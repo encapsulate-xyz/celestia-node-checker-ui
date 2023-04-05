@@ -1,11 +1,11 @@
 import React from "react";
 import './css/Field.css';
 
-export function Field({ label, id, type, icon}) {
+export function Field({label, id, type, icon, hoverText}) {
     return (<div className="level">
         <div className="level-left">
             <div className="level-item">
-                <h1>
+                <h1 data-tooltip={hoverText}>
                     {label}
                 </h1>
             </div>

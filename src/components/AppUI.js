@@ -25,6 +25,7 @@ export function ReturnApp(props) {
                                             id={`field-${index}`}
                                             type={field.type}
                                             icon={field.icon}
+                                            hoverText={field.hoverText}
                                         />
                                     ))}
                                     <div id="my-button" className="control">

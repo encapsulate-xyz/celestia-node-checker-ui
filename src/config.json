@@ -8,17 +8,20 @@
     {
       "label": "Light Node IP",
       "type": "text",
-      "icon": "fa-server"
+      "icon": "fa-server",
+      "hoverText": "Enter the IP address of the light node"
     },
     {
       "label": "RPC Port",
       "type": "number",
-      "icon": "fa-plug"
+      "icon": "fa-plug",
+      "hoverText": "Enter the RPC port number for the light node"
     },
     {
       "label": "Read Auth Token",
       "type": "text",
-      "icon": "fa-key"
+      "icon": "fa-key",
+      "hoverText": "Enter the read authorization token for the light node"
     }
   ],
   "resultRowTitle": "Health Results",

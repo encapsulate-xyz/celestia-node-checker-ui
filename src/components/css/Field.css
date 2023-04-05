@@ -18,7 +18,24 @@
     margin: 0;
     transition: color 0.3s; /* Added a transition for a smooth color change on hover */
 }
+/* Style the CSS tooltip */
+.level-item h1:hover::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: calc(50% + 10px);
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 4px 8px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+}
 
-.level-item:hover h1 {
-    color: #0984e3; /* Changed the color on hover to a cool blue */
+/* Hide the default tooltip */
+.level-item h1:hover {
+    color: #0984e3;
+    text-decoration: none;
+    cursor: default;
 }
