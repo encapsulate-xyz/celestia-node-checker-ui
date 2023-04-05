@@ -1,362 +1,134 @@
 import './App.css';
-import axios from 'axios';
-import React, {useState, useEffect} from 'react';
-
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------
-// Variables to change when coding this app for something else
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------
-
-const textField = "Node IP"
-const numField = "RPC Port"
-
-
-const textFieldNumber = "1"
-const numFieldNumber = "2"
-
-
-const Box1Text = "Node Version"
-const Box2Text = "Sync Percentage"
-const Box3Text = "Node TPS"
-
-
-
-const Box1Suffix = " ℹ️"
-const Box2Suffix = " 📩"
-const Box3Suffix = " ⚡"
-
-
-const appTitle = "Sui Node Health Checker"
-const resultRowTitle = "Sui Node Health Checker"
-
-const backendUrl = "https://web-backend.scale3production.com"
-const backendApiFailureMessage = "Unable to reach the node"
-
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------
-
-async function loadNetworkData(setTotalTokensAllocated) {
-    setTotalTokensAllocated("networkStats")
-    console.log("Done now")
-
-}
-
+import React, {useState} from 'react';
+import {getPeers} from './api-calls/requests/p2p-peers';
+import {ReturnApp} from "./components/AppUI";
+import config from './config';
+import {getInfo, getP2pInfo} from "./api-calls/requests/p2p-info";
+import {getLocalHead} from "./api-calls/requests/header-local-head";
+import {getSamplingStats} from "./api-calls/requests/daser-sampling-stats";
+import {getBalance} from "./api-calls/requests/state-balance";
+import {getAccountAddress} from "./api-calls/requests/state-account-address";
+import {getResourceState} from "./api-calls/requests/p2p-resource-state";
+import {getProbabilityOfAvailability} from "./api-calls/requests/share-probability-of-availability";
+import {getNodeInfo} from "./api-calls/requests/node-info";
 
 function App() {
-
-    const button = document.getElementById('button');
+    const [loadOnClick, setLoadOnClick] = useState(false);
 
     const load = async () => {
-
-            // button.addEventListener('click', () => {
-                console.log('Calculating...');
-                // show loader
-        if (button)
-                button.classList.add('loading');
-
-                // set timeout
-                setTimeout(computeResults, 7000);
-
-            // });
-    }
-
-    const [totalTokensAllocated, setTotalTokensAllocated] = useState([]);
+        console.log('Calculating...');
+        addLoadingClass();
+        setTimeout(computeResults, 4000);
+    };
 
 
-    useEffect(() => {
-        // Runs ONCE after initial rendering
-        loadNetworkData(setTotalTokensAllocated);
+    const addLoadingClass = () => {
+        const button = document.getElementById('button');
+        if (button) button.classList.add('loading');
+    };
 
-    }, []);
+    const removeLoadingClass = () => {
+        const button = document.getElementById('button');
+        if (button) button.classList.remove('loading');
+    };
 
     const computeResults = async () => {
+        console.log('loading');
+        let {ipAddress, port, authToken} = readInput();
+
+        // todo: remove this
+        ipAddress = "165.232.182.75"
+        port = "26658"
+        authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJwdWJsaWMiLCJyZWFkIiwid3JpdGUiLCJhZG1pbiJdfQ.6Vt55wvPNw1uk5z0NB4ufPj-IOnR77pG7i0LjwtRkOU"
 
 
-        console.log("loading");
-        const amount = parseFloat(document.getElementById("amount").value);
-        const addressVar = document.getElementById("address").value;
-        console.log(addressVar)
+        console.log(ipAddress, port, authToken)
 
-        console.log("amount");
-        console.log();
-        if ((!amount) || (!addressVar)) {
-            alert("Please enter Proper Values");
-            if (button)
-                button.classList.remove('loading');
-
-            document.getElementById("monthlyPayment").innerHTML = Box1Suffix;
-
-            document.getElementById("totalInterest").innerHTML = Box2Suffix
-            document.getElementById("totalPayment").innerHTML = Box3Suffix;
-            //return
-            return returnApp()
+        if (!ipAddress || !port || !authToken) {
+            handleError(config.missingValuesMessage);
+            return;
         }
 
-        // const response = await axios.get(`${IP}/peggo?lcd=https://umee-api.polkachu.com&orchAddress=${addressVar}`);
-        const response = await axios.get(`${backendUrl}/v1/sui_node_check?network_type=devnet&url=${addressVar}:${amount}`);
-        let result = response.data
-        console.log(result)
+        try {
+            const [
+                peerCount,
+                info,
+                localHead,
+                samplingStats,
+                // balance,
+                accountAddress,
+                // resourceState,
+                probabilityOfAvailability,
+                apiVersion
+            ] = await Promise.all([
+                getPeers(ipAddress, port, authToken),
+                getP2pInfo(ipAddress, port, authToken),
+                getLocalHead(ipAddress, port, authToken),
+                getSamplingStats(ipAddress, port, authToken),
+
+                // getBalance(ipAddress, port, authToken),
+                getAccountAddress(ipAddress, port, authToken),
+                // getResourceState(ipAddress, port, authToken),
+                getProbabilityOfAvailability(ipAddress, port, authToken),
+                getNodeInfo(ipAddress, port, authToken)
+            ]);
 
 
+            console.log(`peerCount: ${peerCount}`)
 
-        // check if indexer stats is null
-        if (!result || !result.node_total_transactions) {
-            alert(`${backendApiFailureMessage}`);
-            if (button)
-                button.classList.remove('loading');
+            if ([peerCount, info, localHead, accountAddress, probabilityOfAvailability, samplingStats, apiVersion].some((value) => value === null || value === undefined || Number.isNaN(value))) {
+                handleError(config.backend.apiFailureMessage);
+                return;
+            }
 
-            document.getElementById("monthlyPayment").innerHTML = Box1Suffix;
-
-            document.getElementById("totalInterest").innerHTML = Box2Suffix
-            document.getElementById("totalPayment").innerHTML = Box3Suffix;
-            //return
-            return returnApp()
+            updateUI(peerCount, info, localHead, accountAddress, probabilityOfAvailability, samplingStats, apiVersion);
+            removeLoadingClass();
+            setLoadOnClick(true);
+        } catch (e) {
+            console.log(config.backend.apiFailureMessage)
+            handleError(config.backend.apiFailureMessage);
         }
 
-        const syncPercentage = ((parseFloat(result.node_total_transactions) * 100) / parseFloat(result.network_total_transactions)).toFixed(0);
+    };
+
+    const readInput = () => {
+        const ipAddress = document.getElementById('field-0').value;
+        const port = document.getElementById('field-1').value;
+        const authToken = document.getElementById('field-2').value;
+
+        return {ipAddress, port, authToken};
+    };
+
+    const handleError = (message) => {
+        alert(message);
+        removeLoadingClass();
+    };
+
+    const updateUI = (peerCount, info, localHead, accountAddress, probabilityOfAvailability, samplingStats, apiVersion) => {
+
+        // headOfSampledChain: data.result.head_of_sampled_chain,
+        //     headOfCatchup: data.result.head_of_catchup,
+        //     networkHeadHeight: data.result.network_head_height,
+        //     concurrency: data.result.concurrency,
+        //     catchUpStatus: booleanToYesNo(data.result.catch_up_done),
+        //     isRunning: booleanToDoneInProgress(data.is_running)
 
 
-        document.getElementById("monthlyPayment").innerHTML = result.node_version + " " + Box1Suffix;
-
-        document.getElementById("totalInterest").innerHTML = syncPercentage + " % " + Box2Suffix;
-        document.getElementById("totalPayment").innerHTML = result.node_tps + " " + Box3Suffix;
-        if (button)
-            button.classList.remove('loading');
-
-    }
-
-    return (
-        <body>
-        <section className="section">
-            <div className="container">
-                <br/>
-                <br/>
-                <br/>
-                <div className="content">
-                    <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> {appTitle} </u> ⭐  </h1>
-
-                </div>
-                <br/>
-
-                <div className="columns">
-                    <div className="column is-three-quarters">
-                        <div className="card">
-                            <div className="card-content">
-                                <form id="loan-form">
-                                    <div className="level">
-                                        {/*// <!-- Left side -->*/}
-                                        <div className="level-left is-marginless">
-                                            <div className="level-item">
-                                                <p className="number">{textFieldNumber}</p>
-                                                <h1><b>{textField}</b></h1>
-                                            </div>
-                                        </div>
-
-                                        {/*// <!-- Right side -->*/}
-                                        <div className="level-right">
-                                            <div className="level-item">
-                                                <div className="field">
-                                                    <div className="control has-icons-left">
-                                                        <input className="input" id="address" type="text"/>
-                                                        {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
-                                                        <span className="icon is-small is-left">
-                              <i className="fa fa-home"></i>
-                            </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="level">
-                                        {/*// <!-- Left side -->*/}
-                                        <div className="level-left is-marginless">
-                                            <div className="level-item">
-                                                <p className="number">{numFieldNumber}</p>
-                                                <h1> <b>{numField}</b>   </h1>
-                                            </div>
-                                        </div>
-
-                                        {/*// <!-- Right side -->*/}
-                                        <div className="level-right">
-                                            <div className="level-item">
-                                                <div className="field">
-                                                    <div className="control has-icons-left ">
-                                                        <input className="input" id="amount" type="number"/>
-                                                        <span className="icon is-small is-left">
-                              <i className="fa fa-dollar-sign"></i>
-                            </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="my-button" className="control">
-                                        <button id="button"
-                                                className="button is-large is-fullwidth is-primary is-outlined"
-                                                type={"button"} onClick={load}
-                                        >
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        {/*// <!-- RESULTS -->*/}
-        <section className="section">
-            <h1 className="title ">{resultRowTitle}</h1>
-            <div className="columns is-multiline">
-
-                <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                    <div className="notification is-primary has-text">
-                        <p id="monthlyPayment" className="title is-1">{Box1Suffix}</p>
-                        <p className="subtitle is-4">{Box1Text}</p>
-                    </div>
-                </div>
-
-                <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                    <div className="notification is-info has-text">
-                        <p id="totalInterest" className="title is-1">{Box2Suffix}</p>
-                        <p className="subtitle is-4">{Box2Text}</p>
-                    </div>
-                </div>
-
-                <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                    <div className="notification is-link has-text">
-                        <p id="totalPayment" className="title is-1">{Box3Suffix}</p>
-                        <p className="subtitle is-4">{Box3Text}</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
+        document.getElementById('resultBox-0').innerHTML = info
+        document.getElementById('resultBox-1').innerHTML = accountAddress
+        document.getElementById('resultBox-2').innerHTML = localHead
+        document.getElementById('resultBox-3').innerHTML = peerCount
+        document.getElementById('resultBox-4').innerHTML = probabilityOfAvailability
+        document.getElementById('resultBox-5').innerHTML = samplingStats.isRunning
+        document.getElementById('resultBox-6').innerHTML = samplingStats.catchUpStatus
+        document.getElementById('resultBox-7').innerHTML = samplingStats.headOfCatchup
+        document.getElementById('resultBox-8').innerHTML = samplingStats.networkHeadHeight
+        document.getElementById('resultBox-9').innerHTML = apiVersion
 
 
+    };
 
-        </body>
-    );
-}
-
-
-
-function returnApp() {
-    return (
-        <body>
-        <section className="section">
-            <div className="container">
-                <br/>
-                <br/>
-                <br/>
-                <div className="content">
-                    <h1> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   ⭐ <u> {appTitle} </u> ⭐  </h1>
-
-                </div>
-                <br/>
-
-                <div className="columns">
-                    <div className="column is-three-quarters">
-                        <div className="card">
-                            <div className="card-content">
-                                <form id="loan-form">
-                                    <div className="level">
-                                        {/*// <!-- Left side -->*/}
-                                        <div className="level-left is-marginless">
-                                            <div className="level-item">
-                                                <p className="number">2</p>
-                                                <h1><b>{textField}</b></h1>
-                                            </div>
-                                        </div>
-
-                                        {/*// <!-- Right side -->*/}
-                                        <div className="level-right">
-                                            <div className="level-item">
-                                                <div className="field">
-                                                    <div className="control has-icons-left">
-                                                        <input className="input" id="address" type="text"/>
-                                                        {/*<input className="input" id="address" type="text" onChange={e => loadIndexerData(e.target.value,setIndexerData)} />*/}
-                                                        <span className="icon is-small is-left">
-                              <i className="fa fa-home"></i>
-                            </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="level">
-                                        {/*// <!-- Left side -->*/}
-                                        <div className="level-left is-marginless">
-                                            <div className="level-item">
-                                                <p className="number">1</p>
-                                                <h1> <b>{numField}</b>   </h1>
-                                            </div>
-                                        </div>
-
-                                        {/*// <!-- Right side -->*/}
-                                        <div className="level-right">
-                                            <div className="level-item">
-                                                <div className="field">
-                                                    <div className="control has-icons-left ">
-                                                        <input className="input" id="amount" type="number"/>
-                                                        <span className="icon is-small is-left">
-                              <i className="fa fa-dollar-sign"></i>
-                            </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="my-button" className="control">
-                                        <button id="button"
-                                                className="button is-large is-fullwidth is-primary is-outlined"
-                                                type={"button"}
-                                        >
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        {/*// <!-- RESULTS -->*/}
-        <section className="section">
-            <h1 className="title ">{resultRowTitle}</h1>
-            <div className="columns is-multiline">
-
-                <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                    <div className="notification is-primary has-text">
-                        <p id="monthlyPayment" className="title is-1">{Box1Suffix}</p>
-                        <p className="subtitle is-4">{Box1Text}</p>
-                    </div>
-                </div>
-
-                <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                    <div className="notification is-info has-text">
-                        <p id="totalInterest" className="title is-1">{Box2Suffix}</p>
-                        <p className="subtitle is-4">{Box2Text}</p>
-                    </div>
-                </div>
-
-                <div className="column is-12-tablet is-6-desktop is-3-widescreen">
-                    <div className="notification is-link has-text">
-                        <p id="totalPayment" className="title is-1">{Box3Suffix}</p>
-                        <p className="subtitle is-4">{Box3Text}</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-
-
-        </body>
-    );
+    return (<ReturnApp load={load} config={config}/>);
 }
 
 export default App;

@@ -1,0 +1,24 @@
+.level-left {
+    display: flex;
+    align-items: center;
+}
+
+.level-item {
+    font-family: 'Roboto', Arial, sans-serif; /* Changed the font-family to Roboto */
+    font-size: 18px; /* Increased the font size from 18px to 20px */
+    color: #2d3436; /* Changed the color to a slightly darker shade */
+    margin-bottom: 2px;
+    padding-right: 4px;
+    letter-spacing: 1px; /* Added letter-spacing for a more distinct appearance */
+}
+
+.level-item h1 {
+    font-size: 20px;
+    font-weight: inherit;
+    margin: 0;
+    transition: color 0.3s; /* Added a transition for a smooth color change on hover */
+}
+
+.level-item:hover h1 {
+    color: #0984e3; /* Changed the color on hover to a cool blue */
+}

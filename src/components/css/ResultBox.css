@@ -1,0 +1,25 @@
+.notification.success {
+    background-color: #DFF2BF;
+}
+
+.notification.error {
+    background-color: #FFBABA;
+}
+
+.notification.warning {
+    background-color: #FEEFB3;
+}
+
+
+.notification {
+    overflow: auto;
+}
+
+.notification .title.is-1 {
+    font-family: 'Courier New', Courier, monospace; /* Changed the font-family to a monospace font */
+    font-size: 1.5rem; /* Adjust this value to your desired font size */
+}
+
+.notification .subtitle.is-4 {
+    font-size: 1.5rem; /* Adjust this value to your desired font size */
+}
