@@ -132,7 +132,7 @@ function App() {
         document.getElementById('resultBox-5').innerHTML = samplingStats.isRunning
         document.getElementById('resultBox-6').innerHTML = samplingStats.catchUpStatus
         document.getElementById('resultBox-7').innerHTML = samplingStats.headOfCatchup
-        document.getElementById('resultBox-8').innerHTML = samplingStats.networkHeadHeight
+        document.getElementById('resultBox-8').innerHTML = samplingStats.headOfSampledChain
         document.getElementById('resultBox-9').innerHTML = apiVersion
     };
 
