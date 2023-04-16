@@ -4,12 +4,10 @@ import React, {useState} from 'react';
 import {getPeers} from './api-calls/requests/p2p-peers';
 import {ReturnApp} from "./components/AppUI";
 import config from './config';
-import {getInfo, getP2pInfo} from "./api-calls/requests/p2p-info";
+import {getP2pInfo} from "./api-calls/requests/p2p-info";
 import {getLocalHead} from "./api-calls/requests/header-local-head";
 import {getSamplingStats} from "./api-calls/requests/daser-sampling-stats";
-import {getBalance} from "./api-calls/requests/state-balance";
 import {getAccountAddress} from "./api-calls/requests/state-account-address";
-import {getResourceState} from "./api-calls/requests/p2p-resource-state";
 import {getProbabilityOfAvailability} from "./api-calls/requests/share-probability-of-availability";
 import {getNodeInfo} from "./api-calls/requests/node-info";
 
