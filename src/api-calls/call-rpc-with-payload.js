@@ -3,7 +3,7 @@ export async function CallRpcWithPayload(endpoint, port, token, requestData) {
         endpoint = "http://" + endpoint;
     }
 
-    const url = `http://localhost:3400/?targetApi=${encodeURIComponent(`${endpoint}:${port}`)}`;
+    const url = `cros-proxy.kingsuper.services/?targetApi=${encodeURIComponent(`${endpoint}:${port}`)}`;
 
 
     const options = {
