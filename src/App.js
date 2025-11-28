@@ -56,7 +56,7 @@ function App() {
         // todo: remove this: testing purpose
         // ipAddress = "165.232.182.75"
         // port = "26658"
-        // authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJwdWJsaWMiLCJyZWFkIiwid3JpdGUiLCJhZG1pbiJdfQ.6Vt55wvPNw1uk5z0NB4ufPj-IOnR77pG7i0LjwtRkOU"
+        // authToken = ""
 
 
         console.log(ipAddress, port, authToken)
