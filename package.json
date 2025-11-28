@@ -7,20 +7,24 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "axiom": "0.1.6",
-    "axios": "^0.21.1",
+    "axiom": "0.31.1",
+    "axios": "^1.12.0",
     "bootstrap": "^4.5.3",
-    "cors": "^2.8.5",
-    "cors-anywhere": "^0.4.4",
     "express": "^4.18.2",
+    "http-proxy": "^1.18.1",
     "http-proxy-middleware": "^2.0.6",
+    "nth-check": "^2.0.1",
+    "postcss": "^8.4.31",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-scripts": "5.0.1",
-    "serve": "^14.2.5"
+    "serve": "^14.2.5",
+    "webpack-dev-server": "^5.2.1"
   },
   "devDependencies": {
     "typescript": "3.3.3"
+  },
+  "overrides": {
   },
   "scripts": {
     "start": "react-scripts start",
