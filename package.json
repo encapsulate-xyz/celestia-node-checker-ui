@@ -8,7 +8,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "axiom": "0.52.2",
-    "axios": "^1.16.0",
+    "axios": "^1.18.0",
     "bootstrap": "^4.5.3",
     "express": "^4.22.2",
     "http-proxy": "^1.18.1",
