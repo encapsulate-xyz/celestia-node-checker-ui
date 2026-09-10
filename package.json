@@ -10,7 +10,7 @@
     "axiom": "0.52.2",
     "axios": "^1.18.0",
     "bootstrap": "^4.5.3",
-    "express": "^4.22.2",
+    "express": "^5.2.1",
     "http-proxy": "^1.18.1",
     "http-proxy-middleware": "^3.0.7",
     "postcss": "^8.4.31",
